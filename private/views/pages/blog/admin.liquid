@@ -3,7 +3,7 @@ slug: 'blog/admin'
 format: html
 layout_name: 'admin-<%= layout_name %>'
 authorization_policies:
-  - 'user_blog_edition'
+  - 'instance_blog_edition'
 ---
 {% assign page = params.page | default: 1 | plus: 0 %}
 {% assign per_page = params.per_page  | default: 10 | plus: 0 %}
@@ -12,7 +12,7 @@ authorization_policies:
 {%- endcapture -%}
 {% assign url_params = current_full_path | extract_url_params: url_template %}
 
-{%- query_graph 'get_blog_instance', result_name: bi, scope: 'blog'<%= blog_type == 'User Blog' ? ', current_user_id: @current_user.id' : '' %> -%}
+{%- query_graph 'get_blog_instance', result_name: bi, scope: 'blog''' -%}
 {% assign blog_instance = bi.customizations.results.first %}
 
 {%- query_graph 'get_blog_posts', result_name: g, blog_instance_id: blog_instance.id, tags: params.tags -%}
