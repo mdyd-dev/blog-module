@@ -1,9 +1,9 @@
 ---
-slug: '<%= blog_scope %>'
+slug: 'blog'
 layout_name: '<%= layout_name %>'
 ---
 {%- capture url_template -%}
-  {% if params.language %}/{lang}{%- endif -%}/<%= blog_scope %>{/<%= blog_scope %>}{/category}{/tags}{?page,per_page}
+  {% if params.language %}/{lang}{%- endif -%}/blog{/blog}{/category}{/tags}{?page,per_page}
 {%- endcapture -%}
 
 {% assign url_params = current_full_path | extract_url_params: url_template %}
@@ -16,7 +16,7 @@ layout_name: '<%= layout_name %>'
   {% assign feature_post_first = true %}
 {% endif %}
 
-{%- query_graph 'get_blog_instance', result_name: bi, scope: '<%= blog_scope %>', enabled: 'true' -%}
+{%- query_graph 'get_blog_instance', result_name: bi, scope: 'blog', enabled: 'true' -%}
 {% assign blog_instance = bi.customizations.results.first %}
 
 {% if blog_instance.grid_view_enabled %}
@@ -90,8 +90,8 @@ layout_name: '<%= layout_name %>'
         {%- if blog_instance.sidebar_enabled -%}
           <aside class="c-layout__sidebar">
 
-            {% assign rss_link = '/<%= blog_scope %>/rss/' | append: blog_instance.slug | append: '.rss' %}
-            {% capture rss_link %}/<%= blog_scope %>/rss/{{ blog_instance.slug }}.rss{% endcapture %}
+            {% assign rss_link = '/blog/rss/' | append: blog_instance.slug | append: '.rss' %}
+            {% capture rss_link %}/blog/rss/{{ blog_instance.slug }}.rss{% endcapture %}
             {% include 'blog/social-list',
               widget_title: 'Be in touch',
               facebook_link: 'https://www.facebook.com/DesksNearMe',
@@ -120,7 +120,7 @@ layout_name: '<%= layout_name %>'
   {%- if current_user.id == user_id -%}
     {%- include 'blog/flying-button',
       btn_text: 'Setting',
-      btn_href: '/<%= blog_scope %>/admin/settings',
+      btn_href: '/blog/admin/settings',
       btn_icon: 'equalizer2'
     -%}
   {%- endif -%}

@@ -1,11 +1,11 @@
 ---
-slug: '<%= blog_scope %>/admin/settings'
+slug: 'blog/admin/settings'
 format: html
 layout_name: 'admin-<%= layout_name %>'
 authorization_policies:
   - <%= blog_type == 'User Blog' ? 'user_blog_settings_edition' : 'instance_blog_edition' %>
 ---
-{%- query_graph 'get_blog_instance', result_name: bi, scope: '<%= blog_scope %>'<%= blog_type == 'User Blog' ? ', current_user_id: @current_user.id' : '' %> -%}
+{%- query_graph 'get_blog_instance', result_name: bi, scope: 'blog'<%= blog_type == 'User Blog' ? ', current_user_id: @current_user.id' : '' %> -%}
 {% assign blog = bi.customizations.results.first %}
 
 {%- include 'blog/admin/navigation' -%}

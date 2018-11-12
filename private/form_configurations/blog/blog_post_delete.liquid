@@ -2,7 +2,7 @@
 name: blog_post_delete
 resource: Customization
 configuration:
-return_to: '<%= blog_scope %>/admin'
+return_to: 'blog/admin'
 ---
 {% assign url = '/api/user/customizations/' | append: form.id %}
 {% form_for form, url: @url, as: customization, method: 'delete' html-class: 'd-inline' %}

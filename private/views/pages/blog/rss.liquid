@@ -1,15 +1,15 @@
 ---
-slug: '<%= blog_scope %>/rss'
+slug: 'blog/rss'
 format: rss
 layout_name: '<%= layout_name %>'
 ---
 
 {%- capture url_template -%}
-{% if params.language %}/{lang}{%- endif -%}/<%= blog_scope %>/rss/{slug}.rss
+{% if params.language %}/{lang}{%- endif -%}/blog/rss/{slug}.rss
 {%- endcapture -%}
 {% assign url_params = current_full_path | extract_url_params: url_template %}
 
-{%- query_graph 'get_blog_instance', scope: '<%= blog_scope %>', result_name: bi, slug: url_params.slug, enabled: 'true' -%}
+{%- query_graph 'get_blog_instance', scope: 'blog', result_name: bi, slug: url_params.slug, enabled: 'true' -%}
 {% assign blog_instance = bi.customizations.results.first %}
 {% if url_params.slug != blank and blog_instance %}
   {%- assign today = 'now' | date: '%F' -%}
@@ -24,8 +24,8 @@ layout_name: '<%= layout_name %>'
           <title>{{ blog_post.title }}</title>
           <description>{{ blog_post.content }}</description>
           <pubDate>{{ blog_post.published_at  | localize: 'long' }}</pubDate>
-          <link>https://desksnear.me/<%= blog_scope %>/post/{{ blog_post.slug }}</link>
-          <guid>https://desksnear.me/<%= blog_scope %>/post/{{ blog_post.slug }}</guid>
+          <link>https://desksnear.me/blog/post/{{ blog_post.slug }}</link>
+          <guid>https://desksnear.me/blog/post/{{ blog_post.slug }}</guid>
         </item>
       {%- endfor -%}
     </channel>

@@ -1,17 +1,17 @@
 ---
-slug: '<%= blog_scope %>/post'
+slug: 'blog/post'
 format: html
 layout_name: '<%= layout_name %>'
 ---
 {% assign url = "https://" | append: context.location.host | append: context.location.href %}
 
 {%- capture url_template -%}
-{% if params.language %}/{lang}{%- endif -%}/<%= blog_scope %>/post/{blog_slug}/{post_slug}
+{% if params.language %}/{lang}{%- endif -%}/blog/post/{blog_slug}/{post_slug}
 {%- endcapture -%}
 
 {% assign url_params = current_full_path | extract_url_params: url_template %}
 
-{%- query_graph 'get_blog_instance', result_name: bi, scope: '<%= blog_scope %>', slug: url_params.blog_slug, enabled: 'true' -%}
+{%- query_graph 'get_blog_instance', result_name: bi, scope: 'blog', slug: url_params.blog_slug, enabled: 'true' -%}
 {% assign blog_instance = bi.customizations.results.first %}
 
 {% if url_params.blog_slug != blank and url_params.post_slug != blank and blog_instance %}
@@ -91,7 +91,7 @@ layout_name: '<%= layout_name %>'
 
     {% assign user_id = blog_instance.user.id | plus: 0 %}
     {%- if current_user.id == user_id -%}
-      {% assign edit_post_href = '/<%= blog_scope %>/posts/edit/' | append: blog_post.id %}
+      {% assign edit_post_href = '/blog/posts/edit/' | append: blog_post.id %}
       {%- include 'blog/flying-button',
         btn_text: 'Edit',
         btn_href: edit_post_href,
