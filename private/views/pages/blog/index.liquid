@@ -41,7 +41,7 @@ layout_name: 'blog-layout'
     {{ slug | capitalize }}
   {%- endcontent_for -%}
 
-  {%- include 'blog/hero',
+  {%- include 'private/views/partials/blog/hero',
     title: blog_instance.title,
     subtitle: blog_instance.subtitle,
     img_path: blog_instance.header_image.transformed
@@ -125,5 +125,5 @@ layout_name: 'blog-layout'
     -%}
   {%- endif -%}
 {% else %}
-  {%- include 'blog/hero', title: 'Blog is not enabled' -%}
+  {%- include 'private/views/partials/blog/hero', title: 'Blog is not enabled' -%}
 {% endif %}
