@@ -1,6 +1,6 @@
 ---
 slug: 'blog'
-layout_name: 'blog-layout'
+layout_name: 'private/views/layouts/blog'
 ---
 {%- capture url_template -%}
   {% if params.language %}/{lang}{%- endif -%}/blog{/blog}{/category}{/tags}{?page,per_page}
@@ -19,22 +19,7 @@ layout_name: 'blog-layout'
 {%- query_graph 'get_blog_instance', result_name: bi, scope: 'blog', enabled: 'true' -%}
 {% assign blog_instance = bi.customizations.results.first %}
 
-{% if blog_instance.grid_view_enabled %}
-  {% if blog_instance.sidebar_enabled %}
-    {% assign grid_view_cols_nr = 2 %}
-  {% else %}
-    {% assign grid_view_cols_nr = 3 %}
-  {% endif %}
-
-  {% if feature_post_first %}
-    {% if grid_view_cols_nr == 2 %}
-      {% assign per_page = per_page %}
-    {% endif %}
-
-  {% elsif grid_view_cols_nr == 3 %}
-    {% assign per_page = per_page %}
-  {% endif %}
-{% endif %}
+{% assign grid_view_cols_nr = 2 %}
 
 {% if slug != blank and blog_instance %}
   {%- content_for 'meta_title' -%}
@@ -70,7 +55,7 @@ layout_name: 'blog-layout'
             </div>
           {% endif %}
 
-          {%- include 'blog/posts-list',
+          {%- include 'private/views/partials/blog/posts-list',
             is_grid_view: blog_instance.grid_view_enabled,
             grid_view_cols: grid_view_cols_nr,
             feature_first: feature_post_first,
@@ -78,7 +63,7 @@ layout_name: 'blog-layout'
             instance_slug: blog_instance.slug
           -%}
 
-          {%- include 'blog/pagination',
+          {%- include 'private/views/partials/blog/pagination',
             max_full_pagination: 6,
             max_side_pagination: 2,
             posts_per_page: per_page,
@@ -92,7 +77,7 @@ layout_name: 'blog-layout'
 
             {% assign rss_link = '/blog/rss/' | append: blog_instance.slug | append: '.rss' %}
             {% capture rss_link %}/blog/rss/{{ blog_instance.slug }}.rss{% endcapture %}
-            {% include 'blog/social-list',
+            {% include 'private/views/partials/blog/social-list',
               widget_title: 'Be in touch',
               facebook_link: 'https://www.facebook.com/DesksNearMe',
               twitter_link: 'https://twitter.com/desksnearme',
@@ -100,12 +85,12 @@ layout_name: 'blog-layout'
               rss_link: rss_link
             %}
 
-            {%- include 'blog/tags-widget',
+            {%- include 'private/views/partials/blog/tags-widget',
               widget_title: 'Categories',
               tags: blog_instance.tags_filter
             -%}
 
-            {% include 'blog/facebook-widget' %}
+            {% include 'private/views/partials/blog/facebook-widget' %}
 
           </aside>
         {%- endif -%}
@@ -118,7 +103,7 @@ layout_name: 'blog-layout'
 
   {% assign user_id = blog_instance.user.id | plus: 0 %}
   {%- if current_user.id == user_id -%}
-    {%- include 'blog/flying-button',
+    {%- include 'private/views/partials/blog/flying-button',
       btn_text: 'Setting',
       btn_href: '/blog/admin/settings',
       btn_icon: 'equalizer2'

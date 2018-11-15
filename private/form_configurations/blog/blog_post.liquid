@@ -71,14 +71,14 @@ default_payload: |-
     {% fields_for properties %}
       <div class="row">
         <div class="col">
-          {% include 'blog/inputs/text', field_name: 'title', form_name: 'properties' %}
+          {% include 'private/views/partials/blog/inputs/text', field_name: 'title', form_name: 'properties' %}
         </div>
       </div>
       <div class="row">
         <div class="col col-3">
           {%- assign date_format_short_label = 'mm/dd/yyyy' -%}
           {%- capture date_hint -%}Format: {{ date_format_short_label }}{%- endcapture -%}
-          {% include 'blog/inputs/date',
+          {% include 'private/views/partials/blog/inputs/date',
             field_name: 'published_at',
             form_name: 'properties',
             form_object: form_object_properties,
@@ -103,9 +103,9 @@ default_payload: |-
         {% input_field 'content', field_name: 'content', form: 'properties', as: 'text',  data-wysiwyg: 'content' %}
       </div>
 
-      {% include 'blog/inputs/text', field_name: 'excerpt', form_name: 'properties', as_type: 'text', rows: "5" %}
+      {% include 'private/views/partials/blog/inputs/text', field_name: 'excerpt', form_name: 'properties', as_type: 'text', rows: "5" %}
       {% assign tags = form.properties.tags | join: ', ' %}
-      {% include 'blog/inputs/text', field_name: 'tags', html-value: @tags, form_name: 'properties', placeholder: "Tags separated with comma" %}
+      {% include 'private/views/partials/blog/inputs/text', field_name: 'tags', html-value: @tags, form_name: 'properties', placeholder: "Tags separated with comma" %}
     {% endfields_for %}
 
     {% fields_for custom_images, form: expert %}
@@ -117,8 +117,8 @@ default_payload: |-
     {% endfields_for %}
 
     {% fields_for properties %}
-      {% include 'blog/inputs/text', field_name: 'author_name', form_name: 'properties' %}
-      {% include 'blog/inputs/text', field_name: 'author_biography', form_name: 'properties' %}
+      {% include 'private/views/partials/blog/inputs/text', field_name: 'author_name', form_name: 'properties' %}
+      {% include 'private/views/partials/blog/inputs/text', field_name: 'author_biography', form_name: 'properties' %}
     {% endfields_for %}
 
     {% fields_for custom_images, form: expert %}

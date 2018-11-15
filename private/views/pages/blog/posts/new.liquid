@@ -5,7 +5,7 @@ layout_name: 'admin-blog-layout'
 authorization_policies:
   - 'instance_blog_edition'
 ---
-{%- include 'blog/admin/navigation' -%}
+{%- include 'private/views/blog/admin/navigation' -%}
 
 {% render_form 'blog_post',
   object_class: Customization,

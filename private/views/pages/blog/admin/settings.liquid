@@ -1,14 +1,14 @@
 ---
 slug: 'blog/admin/settings'
 format: html
-layout_name: 'admin-blog-layout'
+layout_name: '/private/views/layouts/admin-blog-layout'
 authorization_policies:
   - 'instance_blog_edition'
 ---
 {%- query_graph 'get_blog_instance', result_name: bi, scope: 'blog' -%}
 {% assign blog = bi.customizations.results.first %}
 
-{%- include 'blog/admin/navigation' -%}
+{%- include 'private/views/partials/blog/admin/navigation' -%}
 
 <section class="o-section">
   <div class="o-container">
