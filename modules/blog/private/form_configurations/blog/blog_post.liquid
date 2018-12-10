@@ -47,7 +47,7 @@ configuration:
         }
 default_payload: |-
   {% if form %}
-    {%- query_graph 'get_blog_instance', result_name: bi, scope: 'blog' -%}
+    {%- query_graph 'blog/get_blog_instance', result_name: bi, scope: 'blog' -%}
     {%- assign blog_instance = bi.customizations.results.first -%}
     {
       "properties_attributes": {

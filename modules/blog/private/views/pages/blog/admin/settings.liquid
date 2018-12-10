@@ -1,11 +1,11 @@
 ---
 slug: 'blog/admin/settings'
 format: html
-layout_name: 'layouts/blog/admin-blog-layout'
+layout_name: 'layouts/modules/blog/admin-blog-layout'
 authorization_policies:
-  - 'instance_blog_edition'
+  - 'blog/instance_blog_edition'
 ---
-{%- query_graph 'get_blog_instance', result_name: bi, scope: 'blog' -%}
+{%- query_graph 'blog/get_blog_instance', result_name: bi, scope: 'blog' -%}
 {% assign blog = bi.customizations.results.first %}
 
 {%- include 'modules/blog/private/views/partials/blog/admin/navigation' -%}
