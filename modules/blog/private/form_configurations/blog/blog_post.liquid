@@ -65,7 +65,7 @@ default_payload: |-
   {% assign method = 'POST' %}
 {%- endif -%}
 
-{% form_for form, url: @url, multipart: true, as: customization, method: @method, html-class: 'pt-5 with-borders' %}
+{% form form, url: @url, multipart: true, as: customization, method: @method, html-class: 'pt-5 with-borders' %}
   <input value="{{ form.custom_model_type_id }}" type="hidden" name="custom_model_type_id" />
   <div class="col-md-9 mb-3">
     {% fields_for properties %}
@@ -133,4 +133,4 @@ default_payload: |-
       {% submit 'Submit', class: 'btn btn-primary btn-lg', data-disable-with: 'saving...' %}
     </div>
   </div>
-{% endform_for %}
+{% endform %}

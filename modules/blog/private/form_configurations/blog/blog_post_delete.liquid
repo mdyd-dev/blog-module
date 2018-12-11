@@ -5,6 +5,6 @@ configuration:
 return_to: 'blog/admin'
 ---
 {% assign url = '/api/user/customizations/' | append: form.id %}
-{% form_for form, url: @url, as: customization, method: 'delete' html-class: 'd-inline' %}
+{% form form, url: @url, as: customization, method: 'delete' html-class: 'd-inline' %}
   <input type="Submit" class='btn btn-link' value="Delete" data-confirmation: 'Are you sure?'>
-{% endform_for %}
+{% endform %}

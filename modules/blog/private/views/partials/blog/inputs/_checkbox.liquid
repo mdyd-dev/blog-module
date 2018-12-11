@@ -20,12 +20,10 @@
   {% endfor %}
   >
 
-  {% input_field @field_name, field_name: @field_name, as: boolean, boolean_style: inline, form: @form_name, class: 'form-check-input', required: @is_required %}
   <label class="ml-1 form-check-label">{{ label }}</label>
 
   {% if errors != blank %}
     <div class="form-control-feedback">
-      {% input_field_error @field_name, field_name: @field_name, form: @form_name, class: 'text-danger' %}
     </div>
   {% endif %}
 </div>
