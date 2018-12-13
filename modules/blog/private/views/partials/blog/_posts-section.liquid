@@ -1,12 +1,12 @@
 {% assign posts_required_size = 3 %}
 
-{%- query_graph 'blog/get_blog_posts', result_name: g, published_at_lte: today, per_page: posts_required_size, blog_instance_id: blog_instance.id, tags: related_tags -%}
+{%- query_graph 'modules/blog/get_blog_posts', result_name: g, published_at_lte: today, per_page: posts_required_size, blog_instance_id: blog_instance.id, tags: related_tags -%}
 {% assign related_posts = g.customizations.results %}
 {% assign related_posts_size = related_posts.size %}
 {% assign posts_required_size = posts_required_size | minus: related_posts_size %}
 
 {% unless posts_required_size == 0 %}
-  {%- query_graph 'blog/get_blog_posts', result_name: g, published_at_lte: today, per_page: posts_required_size, blog_instance_id: blog_instance.id -%}
+  {%- query_graph 'modules/blog/get_blog_posts', result_name: g, published_at_lte: today, per_page: posts_required_size, blog_instance_id: blog_instance.id -%}
   {% assign other_posts = g.customizations.results %}
   {% assign related_posts = related_posts | concat: other_posts %}
 {% endunless %}
