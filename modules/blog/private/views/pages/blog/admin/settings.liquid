@@ -1,20 +1,22 @@
 ---
 slug: 'blog/admin/settings'
 format: html
-layout_name: 'layouts/blog/admin-blog-layout'
+layout_name: 'modules/blog/layouts/admin-blog-layout'
 authorization_policies:
-  - 'instance_blog_edition'
+  - 'modules/blog/instance_blog_edition'
 ---
-{%- query_graph 'get_blog_instance', result_name: bi, scope: 'blog' -%}
+{%- query_graph 'modules/blog/get_blog_instance', result_name: bi, scope: 'blog' -%}
 {% assign blog = bi.customizations.results.first %}
 
-{%- include 'modules/blog/private/views/partials/blog/admin/navigation' -%}
+{%- include 'modules/blog/blog/admin/navigation' -%}
 
 <section class="o-section">
   <div class="o-container">
     {% assign object_id = blog.id | default: 'new' %}
 
-    {% render_form blog_settings,
+      {{ object_id }}
+
+    {% render_form "modules/blog/blog_settings",
       object_class: Customization,
       object_id: @object_id,
       parent_object_class: CustomModelType,

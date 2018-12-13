@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" data-instance-id="{{ platform_context.instance_id }}">
 <head>
-  {% include 'modules/blog/private/views/layouts/blog/csrf' %}
-  {% include 'modules/blog/private/views/layouts/admin-blog/stylesheets' %}
+  {% include 'modules/blog/layouts/blog/csrf' %}
+  {% include 'modules/blog/layouts/admin-blog/stylesheets' %}
   {% yield 'head_content' %}
 </head>
 
 <body class="admin-blog {% if is_logged_in %}logged-in{% endif %}">
-  {%- include 'modules/blog/private/views/layouts/admin-blog/header' -%}
+  {%- include 'modules/blog/layouts/admin-blog/header' -%}
 
   <main>
     {{ content_for_layout }}
   </main>
 
-  {% include 'modules/blog/private/views/layouts/blog/cdn-url' %}
-  {% include 'modules/blog/private/views/layouts/admin-blog/javascripts' %}
+  {% include 'modules/blog/layouts/blog/cdn-url' %}
+  {% include 'modules/blog/layouts/admin-blog/javascripts' %}
 </body>
 </html>

@@ -1,13 +1,13 @@
 ---
 slug: 'blog/posts/edit'
 format: html
-layout_name: 'layouts/blog/admin-blog-layout'
+layout_name: 'modules/blog/layouts/admin-blog-layout'
 authorization_policies:
-  - 'instance_blog_edition'
+  - 'modules/blog/instance_blog_edition'
 ---
-{%- include 'modules/blog/private/views/partials/blog/admin/navigation' -%}
+{%- include 'modules/blog/blog/admin/navigation' -%}
 
-{% render_form 'blog_post',
+{% render_form 'modules/blog/blog_post',
   object_class: Customization,
   object_id: @params.slugs,
   parent_object_class: CustomModelType,

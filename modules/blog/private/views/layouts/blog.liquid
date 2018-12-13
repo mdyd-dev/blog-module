@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  {% include 'modules/blog/private/views/layouts/blog/csrf' %}
-  {% include 'modules/blog/private/views/layouts/blog/meta-tags' %}
-  {% include 'modules/blog/private/views/layouts/blog/prefetch' %}
-  {% include 'modules/blog/private/views/layouts/blog/favicon' %}
+  {% include 'modules/blog/blog/csrf' %}
+  {% include 'modules/blog/blog/meta-tags' %}
+  {% include 'modules/blog/blog/prefetch' %}
+  {% include 'modules/blog/blog/favicon' %}
 
-  {%- include 'modules/blog/private/views/layouts/blog/stylesheets' -%}
+  {%- include 'modules/blog/blog/stylesheets' -%}
 
-  {% include 'modules/blog/private/views/layouts/blog/preload' %}
+  {% include 'modules/blog/blog/preload' %}
 
-  {% include 'modules/blog/private/views/layouts/blog/page-title' %}
-  {% include 'modules/blog/private/views/layouts/blog/page-description' %}
+  {% include 'modules/blog/blog/page-title' %}
+  {% include 'modules/blog/blog/page-description' %}
 
   {% yield 'head_content' %}
 </head>
 
 <body class="{% if is_logged_in %}logged-in{% endif %}">
-  {% include 'modules/blog/private/views/layouts/blog/fb' %}
-  {% include 'modules/blog/private/views/layouts/blog/icons' %}
-  {% include 'modules/blog/private/views/layouts/blog/header' %}
-  {% include 'modules/blog/private/views/layouts/blog/flash_messages' %}
+  {% include 'modules/blog/blog/fb' %}
+  {% include 'modules/blog/blog/icons' %}
+  {% include 'modules/blog/blog/header' %}
+  {% include 'modules/blog/blog/flash_messages' %}
 
   <main>
     {{ content_for_layout }}
   </main>
 
-  {%- include 'modules/blog/private/views/layouts/blog/footer' -%}
-  {%- include 'modules/blog/private/views/layouts/blog/javascripts' -%}
+  {%- include 'modules/blog/blog/footer' -%}
+  {%- include 'modules/blog/blog/javascripts' -%}
 </body>
 </html>
