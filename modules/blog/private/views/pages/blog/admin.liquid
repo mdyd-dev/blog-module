@@ -8,9 +8,10 @@ authorization_policies:
 {% assign page = params.page | default: 1 | plus: 0 %}
 {% assign per_page = params.per_page  | default: 10 | plus: 0 %}
 {%- capture url_template -%}
-{% if params.language %}/{lang}{%- endif -%}/blog/admin/{slug}
+    {% if params.language %}/{lang}{%- endif -%}/blog/admin/{slug}
 {%- endcapture -%}
-{% assign url_params = current_full_path | extract_url_params: url_template %}
+
+{% assign url_params = context.location.href | extract_url_params: url_template %}
 
 {%- query_graph 'modules/blog/get_blog_instance', result_name: bi, scope: 'blog''' -%}
 {% assign blog_instance = bi.customizations.results.first %}

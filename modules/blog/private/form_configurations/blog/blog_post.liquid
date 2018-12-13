@@ -4,7 +4,9 @@ async_callback_actions:
   delay:
   content:
 resource: Customization
-return_to: /blog/admin
+resource_owner: anyone
+flash_notice: "Post has beed successfuly updated"
+return_to: /dashboard/blog
 configuration:
   properties:
     title:
@@ -47,7 +49,7 @@ configuration:
         }
 default_payload: |-
   {% if form %}
-    {%- query_graph 'modules/blog/get_blog_instance', result_name: bi, scope: 'blog' -%}
+    {%- query_graph 'get_blog_instance', result_name: bi, scope: 'blog' -%}
     {%- assign blog_instance = bi.customizations.results.first -%}
     {
       "properties_attributes": {
@@ -57,80 +59,42 @@ default_payload: |-
     }
   {% endif %}
 ---
-{%- if form.id -%}
-  {% assign url = '/api/user/customizations/' | append: form.id %}
-  {% assign method = 'PUT' %}
-{%- else -%}
-  {% assign url = '/api/user/customizations' %}
-  {% assign method = 'POST' %}
-{%- endif -%}
+{%- include 'modules/utils/public/views/partials/utils' -%}
 
-{% form_for form, url: @url, multipart: true, as: customization, method: @method, html-class: 'pt-5 with-borders' %}
-  <input value="{{ form.custom_model_type_id }}" type="hidden" name="custom_model_type_id" />
-  <div class="col-md-9 mb-3">
-    {% fields_for properties %}
-      <div class="row">
-        <div class="col">
-          {% include 'modules/blog/blog/inputs/text', field_name: 'title', form_name: 'properties' %}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col col-3">
-          {%- assign date_format_short_label = 'mm/dd/yyyy' -%}
-          {%- capture date_hint -%}Format: {{ date_format_short_label }}{%- endcapture -%}
-          {% include 'modules/blog/blog/inputs/date',
-            field_name: 'published_at',
-            form_name: 'properties',
-            form_object: form_object_properties,
-            label: 'Publish At',
-            hint: date_hint,
-            placeholder: date_format_short_label,
-            mask: 'date'
-          %}
-        </div>
+{%- assign tags = f.properties.tags.value | join: ', ' -%}
+{%- assign date_format_short_label = 'mm/dd/yyyy' -%}
+{%- capture date_hint -%}Format: {{ date_format_short_label }}{%- endcapture -%}
 
-        <div class="col"  style="padding-top:36px">
-          <span class="switch switch">
-            {% assign published_at = form.properties.published_at | date: '%s' %}
-            {% assign now_in_miliseconds = 'now' | date: '%s' %}
-            <input type="checkbox" class="switch" id="switch-normal" {% if now_in_miliseconds > published_at %}checked='checked'{% endif %} name="customization[properties_attributes][published_at]" id="customization_properties_attributes_published_at" value="{{ 'now' | date: '%d/%m/%Y' }}">
-            <label for="switch-normal">Publish Now</label>
-          </span>
-        </div>
-      </div>
+{% form html-class: 'pt-5 with-borders' %}
+  {% if params.page_id != blank %}
+    <input type="hidden" name="page_id" value="{{ params.page_id }}">
+  {% endif %}
 
-      <div class="row">
-        {% input_field 'content', field_name: 'content', form: 'properties', as: 'text',  data-wysiwyg: 'content' %}
-      </div>
+  {%- include flash_messages -%}
 
-      {% include 'modules/blog/blog/inputs/text', field_name: 'excerpt', form_name: 'properties', as_type: 'text', rows: "5" %}
-      {% assign tags = form.properties.tags | join: ', ' %}
-      {% include 'modules/blog/blog/inputs/text', field_name: 'tags', html-value: @tags, form_name: 'properties', placeholder: "Tags separated with comma" %}
-    {% endfields_for %}
+  {%- include input with f.properties.title, type: "text" -%}
+  {%- include input with f.properties.published_at,
+    type: "date",
+    placeholder: date_format_short_label,
+    label: "Publish At"
+  %}
 
-    {% fields_for custom_images, form: expert %}
-      {% fields_for hero_image, form: custom_images %}
-        <div class="row">
-          {% input image, as: image, form: hero_image %}
-        </div>
-      {% endfields_for %}
-    {% endfields_for %}
+  <span class="switch switch">
+    {% assign published_at = form_builder.fields.properties.published_at.value | date: '%s' %}
+    {% assign now_in_miliseconds = 'now' | date: '%s' %}
+    <input type="checkbox" class="switch" id="switch-normal" {% if now_in_miliseconds > published_at %}checked='checked'{% endif %} name="{{ form_builder.fields.properties.published_at.name }}"  value="{{ 'now' | date: '%d/%m/%Y' }}">
+    <label for="switch-normal">Publish Now</label>
+  </span>
 
-    {% fields_for properties %}
-      {% include 'modules/blog/blog/inputs/text', field_name: 'author_name', form_name: 'properties' %}
-      {% include 'modules/blog/blog/inputs/text', field_name: 'author_biography', form_name: 'properties' %}
-    {% endfields_for %}
-
-    {% fields_for custom_images, form: expert %}
-      {% fields_for author_avatar, form: custom_images %}
-        <div class="row">
-          {% input image, as: image, form: author_avatar %}
-        </div>
-      {% endfields_for %}
-    {% endfields_for %}
-
-    <div class="row mt-4">
-      {% submit 'Submit', class: 'btn btn-primary btn-lg', data-disable-with: 'saving...' %}
-    </div>
-  </div>
-{% endform_for %}
+  {%- include input with f.custom_images.hero_image.image, type: "image", label: "Hero Image" -%}
+  {%- include input with f.properties.content, type: "textarea", input_data_attrs: 'data-wysiwyg="content"' -%}
+  {%- include input with f.properties.excerpt, rows: 5, type: "textarea" -%}
+  {%- include input with f.custom_images.author_avatar.image, type: "image", label: "Author Avatar"-%}
+  {%- include input with f.properties.author_name, type: "text" -%}
+  {%- include input with f.properties.author_biography, type: "text" -%}
+  {%- include input with f.properties.tags, type: "text",
+     placeholder: "Tags separated with comma",
+     html-value: tags
+  -%}
+  {% include submit_tag, class: 'btn btn-primary btn-lg', disable_with: 'saving...' %}
+{% endform %}

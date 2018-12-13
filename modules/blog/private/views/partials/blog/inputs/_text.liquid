@@ -1,56 +1,69 @@
-{% assign errors = form_object.object.errors[field_name] %}
-{%- if errors == blank -%}
-  {% assign form_field_name = form_name | append: '.' | append: field_name %}
-  {% assign errors = form_object.object.errors[form_field_name] %}
-{%- endif -%}
+{% comment %}
+  Required params:
+    field: hash
+    label: string
 
-{% capture input_classes %}
-  form-control {% if errors != blank %}form-control-danger{% endif %}
-{% endcapture %}
+  Optional:
+    hint: string
+    type: string
+    min: integer
+    max: integer
+    autocomplete: string
+    required: boolean
+    container_attrs: string
+    input_class: string
+    input_data_attrs: hash of attributes
+    custom_html: string
+    value: string
+    fieldClass: string
+    wrapperClass: string
+    readonly: boolean
+    disabled: boolean
+    forceValue: boolean
+    pattern: string
+    maxlength: number
+    labelClass: string
+    placeholder: string
+{% endcomment %}
+{%- assign _name = name | default: field.name -%}
+{%- assign _autocomplete = autocomplete | default: nil -%}
+{%- assign _pattern = pattern | default: nil -%}
+{%- assign _type = type | default: 'text' -%}
+{%- assign _min = min | default: null -%}
+{%- assign _max = max | default: null -%}
+{%- assign _error_message = field.validation.errors -%}
+{%- assign _input_class = input_class | default: '' | append: ' form-input' -%}
+{%- assign _input_id = id | default: field.name | slugify -%}
+{%- assign _input_data_attrs = input_data_attrs | default: nil -%}
+{%- assign _value = value | default: field.value -%}
+{%- assign _readonly = readonly | default: false -%}
+{%- assign _disabled = disabled | default: false -%}
+{%- assign _maxlength = maxlength | default: nil -%}
+{%- assign _required = required | default: field.validation.rules.presence -%}
 
-{% assign required_fields = form_object.required_fields %}
-
-{% if required_fields contains field_name or required == true %}
-  {% assign is_required = true %}
-{% else %}
-  {% assign is_required = false %}
+{% if _disabled != blank %}
+  {%- assign _error_message = blank -%}
 {% endif %}
 
-{%- capture label_hint -%}{% if hint != blank %} <small>({{ hint }})</small>{%- endif -%}{%- endcapture -%}
+<div class="control-group {{ wrapperClass }}{% if _error_message != blank %} error{% endif %}">
+  {% include 'modules/dashboard-blog/private/views/partials/blog/inputs/label' with label, forId: _input_id, labelClass: labelClass, required: _required, hint: hint %}
 
-{%- if label == blank -%}
-  {%- assign field_label = '' | append: field_name | humanize | capitalize | append: label_hint -%}
-{%- else -%}
-  {%- assign field_label = '' | append: label | append: label_hint -%}
-{%- endif -%}
+  <div class="controls {{ fieldClass }}" {{ container_attrs }}>
+    <input
+      type="{{ _type }}"
+      value="{{ _value }}"
+      class="{{ _input_class }}"
+      name="{{ _name }}"
+      id="{{ _input_id }}"
+      {% if placeholder != blank %} placeholder="{{ _placeholder }}"{% endif %}
+      {% if _readonly == true or _readonly == 'true' %} readonly {% endif %}
+      {% if _required == true or _required == 'true' %} required {% endif %}
+      {% if _disabled == true or _disabled == 'true' %} disabled {% endif %}
+      {{ _input_data_attrs }}
+    />
 
-{% capture type %}{% if as_type == 'text' %}text{% elsif as_type == 'email' %}email{% elsif as_type == 'password' %}password{% elsif as_type == 'integer' %}integer{% elsif as_type == 'float' %}float{% else %}string{% endif %}{% endcapture %}
+    {% if custom_html != blank %}{{ custom_html | html_safe }}{% endif %}
+  </div>
 
-{% assign value = form_object.object[field_name] %}
-
-{% if value == blank and form_name %}
-  {% assign value = form_object.object[form_name][field_name] %}
-{% endif %}
-
-{% if value == blank and default_value != blank %}
-  {% assign value = default_value %}
-{% endif %}
-<div
-  class="form-group row{% if errors != blank %} has-danger{% endif %}{% if is_required %} required{% endif %}"
-  {% for data_attribute in data_attributes %}
-    {{ data_attribute }}
-  {% endfor %}
-  >
-
-  {% if label != false %}
-    {% label @field_name, field_name: @field_name, form: @form_name, required: @is_required, label: @field_label, class: 'form-label' %}
-  {% endif %}
-
-  {% input_field @field_name, field_name: @field_name, form: @form_name, as: @type, class: @input_classes, value: @value, pattern: @pattern, data-geolocation: @geolocation, placeholder: @placeholder, data-mask: @mask, required: @is_required, min: @min, max: @max, step: @step, disabled: @disabled, rows: @rows | default: 2 %}
-
-  {% if errors != blank %}
-    <div class="form-control-feedback">
-      {% input_field_error @field_name, field_name: @field_name, class: 'text-danger', form: @form_name %}
-    </div>
-  {% endif %}
+  {% include 'modules/dashboard-blog/private/views/partials/blog/inputs/error' with message: _error_message %}
 </div>

@@ -2,12 +2,11 @@
 slug: 'blog'
 layout_name: 'modules/blog/layouts/blog'
 ---
-
 {%- capture url_template -%}
   {% if params.language %}/{lang}{%- endif -%}/blog{/blog}{/category}{/tags}{?page,per_page}
 {%- endcapture -%}
 
-{% assign url_params = current_full_path | extract_url_params: url_template %}
+{% assign url_params = context.location.href | extract_url_params: url_template %}
 
 {% assign slug = url_params.slug[1] | default: 'blog' %}
 {% assign tags = url_params.tags | replace: '-', ' ' | default: null %}
